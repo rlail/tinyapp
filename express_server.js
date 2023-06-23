@@ -49,11 +49,32 @@ app.get("/urls/:id", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body); // Log the POST request body to the console
-  res.send("Ok"); // Respond with 'Ok' (we will replace this)
+  const id = generateRandomString(); // Generate a random string (short URL id)
+  const longURL = req.body.longURL; // Get the longURL from the POST request body
+  
+  urlDatabase[id] = longURL; // Save the id-longURL key-value pair to the urlDatabase
+  
+  res.redirect(`/urls/${id}`); // Redirect to /urls/:id
 });
 
-function generateRandomString() {}
+function generateRandomString() {
+  let randomString = "";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  
+  for (let i = 0; i < 6; i++) {
+    randomString += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  
+  return randomString;
+}
 
+app.get("/u/:id", (req, res) => {
+  const shortURL = req.params.id;
+  const longURL = urlDatabase[shortURL];
 
-
+  if (longURL) {
+    res.redirect(longURL);
+  } else {
+    res.status(404).send("Short URL not found");
+  }
+});
