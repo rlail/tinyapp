@@ -68,6 +68,22 @@ app.post("/urls/:id/delete", (req, res) => {
   }
 });
 
+app.post("/urls/:id", (req, res) => {
+  const id = req.params.id;
+  const newLongUrl = req.body.longURL;
+
+  urlDatabase[id] = newLongUrl;
+
+  res.redirect("/urls");
+});
+
+app.post("/login", (req, res) => {
+  const { username } = req.body; // Get the username from the request body
+
+  res.cookie("username", username); // Set the cookie named "username" with the provided value
+  res.redirect("/urls"); // Redirect back to the /urls page
+});
+
 function generateRandomString() {
   let randomString = "";
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
