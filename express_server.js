@@ -22,9 +22,12 @@ function generateRandomString() {
   return randomString;
 }
 
-
 app.get("/", (req, res) => {
   res.send("Hello!");
+});
+
+app.get("/register", (req, res) => {
+  res.render("register");
 });
 
 app.get("/urls", (req, res) => {
@@ -82,7 +85,7 @@ app.post("/login", (req, res) => {
 app.post('/logout', (req, res) => {
   res.clearCookie('username')
   res.redirect('/urls')
-})
+});
 
 app.get("/u/:id", (req, res) => {
   const shortURL = req.params.id;
